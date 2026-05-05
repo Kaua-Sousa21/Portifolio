@@ -238,7 +238,8 @@
         }
 
         .profile-img {
-            width: 100%;
+            width: 500px;
+            height: 500px;
             aspect-ratio: 4/5;
             object-fit: cover;
             display: block;
