@@ -1,4 +1,4 @@
-       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
             --black: #0a0a0a;
@@ -220,7 +220,7 @@
         /* ── ABOUT ── */
         .about-grid {
             display: grid;
-            grid-template-columns: 1fr 1.4fr;
+            grid-template-columns: 0.55fr 1.4fr;
             gap: 5rem;
             align-items: start;
         }
@@ -238,8 +238,7 @@
         }
 
         .profile-img {
-            width: 500px;
-            height: 500px;
+            width: 100%;
             aspect-ratio: 4/5;
             object-fit: cover;
             display: block;
