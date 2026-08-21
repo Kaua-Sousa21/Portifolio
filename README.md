@@ -19,6 +19,3 @@ Galeria de Projetos: Cards interativos com efeitos de hover e links para reposit
 Hub de Contatos: Seção estilizada para conexão rápida via LinkedIn, E-mail e GitHub.
 
 Totalmente Responsivo: Adaptado para dispositivos móveis, tablets e desktops.
-
-📸 Preview
-<img width="1510" height="835" alt="image" src="https://github.com/user-attachments/assets/c96404b4-937d-40d2-adb7-9510944482aa" />
