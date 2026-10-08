@@ -1,283 +1,570 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kauã Sousa — Backend Developer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="shortcut icon" href="upload/letra-k.png" type="image/x-icon">
-    <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kauã Sousa — Backend Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="shortcut icon" href="upload/letra-k.png" type="image/x-icon">
+<style>
+:root{
+  --bg:#070707;
+  --bg2:#0f0f0f;
+  --card:#121212;
+  --line:rgba(255,255,255,.08);
+  --orange:#ff6a00;
+  --orange2:#ff9a3c;
+  --amber:#ffb703;
+  --text:#f2ede8;
+  --muted:#9b948c;
+  --glow:rgba(255,106,0,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.7;
+  overflow-x:hidden;cursor:none;
+}
+@media (hover:none),(pointer:coarse){body{cursor:auto}.cursor,.cursor-ring{display:none}}
+::selection{background:var(--orange);color:#000}
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:#000}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--orange),var(--amber));border-radius:8px}
+a{color:inherit;text-decoration:none;cursor:none}
+@media (hover:none),(pointer:coarse){a{cursor:pointer}}
+
+/* ---------- BACKGROUND ---------- */
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+.blobs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(110px);opacity:.28;will-change:transform}
+.blob.b1{width:520px;height:520px;background:var(--orange);top:-120px;left:-120px;animation:float1 22s ease-in-out infinite}
+.blob.b2{width:440px;height:440px;background:#ff3d00;bottom:-140px;right:-100px;animation:float2 26s ease-in-out infinite}
+.blob.b3{width:320px;height:320px;background:var(--amber);top:45%;left:55%;opacity:.14;animation:float3 30s ease-in-out infinite}
+@keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(180px,140px)}}
+@keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(-200px,-120px)}}
+@keyframes float3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-160px,100px) scale(1.4)}}
+.grid-bg{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(255,106,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,106,0,.05) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse at 50% 30%,#000 10%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse at 50% 30%,#000 10%,transparent 75%);
+  animation:gridmove 14s linear infinite;
+}
+@keyframes gridmove{to{background-position:64px 64px}}
+.noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ---------- CURSOR ---------- */
+.cursor{position:fixed;width:8px;height:8px;background:var(--orange);border-radius:50%;z-index:9999;pointer-events:none;transform:translate(-50%,-50%);box-shadow:0 0 14px var(--orange)}
+.cursor-ring{position:fixed;width:38px;height:38px;border:1.5px solid rgba(255,106,0,.6);border-radius:50%;z-index:9998;pointer-events:none;transform:translate(-50%,-50%);transition:width .25s,height .25s,background .25s,border-color .25s}
+.cursor-ring.hover{width:64px;height:64px;background:rgba(255,106,0,.12);border-color:var(--orange)}
+
+/* ---------- PROGRESS ---------- */
+.progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--orange),var(--amber));z-index:1100;box-shadow:0 0 12px var(--orange)}
+
+/* ---------- NAV ---------- */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:22px 6vw;transition:all .4s;
+}
+nav.scrolled{padding:14px 6vw;background:rgba(7,7,7,.75);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;letter-spacing:.08em;font-size:1.15rem}
+.logo span{color:var(--orange);animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+nav ul{display:flex;gap:34px;list-style:none;align-items:center}
+nav ul a{font-family:'DM Mono',monospace;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);position:relative;transition:color .3s}
+nav ul a:not(.nav-cta)::after{content:'';position:absolute;left:0;bottom:-6px;height:1px;width:0;background:var(--orange);transition:width .3s}
+nav ul a:not(.nav-cta):hover{color:var(--text)}
+nav ul a:not(.nav-cta):hover::after{width:100%}
+.nav-cta{color:#000!important;background:var(--orange);padding:9px 20px;border-radius:50px;font-weight:500;transition:all .3s!important}
+.nav-cta:hover{background:var(--amber);box-shadow:0 0 24px var(--glow);transform:translateY(-2px)}
+.burger{display:none;background:none;border:0;color:var(--text);font-size:1.4rem;cursor:pointer}
+
+/* ---------- HERO ---------- */
+section,header{position:relative;z-index:2}
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:130px 6vw 80px}
+.hero-label{
+  font-family:'DM Mono',monospace;font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);
+  display:inline-flex;align-items:center;gap:12px;margin-bottom:28px;
+  animation:fadeUp .9s .1s both;
+}
+.hero-label::before{content:'';width:44px;height:1px;background:var(--orange)}
+.hero-title{
+  font-family:'Syne',sans-serif;font-weight:800;line-height:.98;letter-spacing:-.03em;
+  font-size:clamp(3.2rem,11vw,9.5rem);
+}
+.hero-title .line{display:block;overflow:hidden}
+.hero-title .line>span{display:inline-block;transform:translateY(110%);animation:rise 1s cubic-bezier(.2,.8,.2,1) forwards}
+.hero-title .line:nth-child(1)>span{animation-delay:.25s}
+.hero-title .line:nth-child(2)>span{animation-delay:.42s}
+@keyframes rise{to{transform:translateY(0)}}
+.line-1{-webkit-text-stroke:2px var(--text);color:transparent}
+.accent-word{
+  background:linear-gradient(100deg,var(--orange),var(--amber),var(--orange));background-size:220% auto;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:shine 4s linear infinite;
+  filter:drop-shadow(0 0 28px rgba(255,106,0,.35));
+}
+@keyframes shine{to{background-position:220% center}}
+.typed{font-family:'DM Mono',monospace;font-size:clamp(.95rem,1.6vw,1.2rem);color:var(--amber);margin-top:26px;min-height:1.8em;animation:fadeUp .9s .7s both}
+.typed::before{content:'> ';color:var(--orange)}
+.caret{display:inline-block;width:9px;height:1.1em;background:var(--orange);vertical-align:-3px;margin-left:3px;animation:blink .8s steps(2) infinite}
+.hero-bottom{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap;margin-top:50px;animation:fadeUp .9s .9s both}
+.hero-desc{max-width:480px;color:var(--muted);font-size:1.05rem}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap}
+.btn-primary,.btn-ghost{
+  font-family:'DM Mono',monospace;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:16px 34px;border-radius:50px;transition:all .35s;position:relative;overflow:hidden;display:inline-block;
+}
+.btn-primary{background:linear-gradient(120deg,var(--orange),var(--amber));color:#000;font-weight:500;box-shadow:0 8px 30px rgba(255,106,0,.3)}
+.btn-primary::after{content:'';position:absolute;top:0;left:-120%;width:80%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);transition:left .7s}
+.btn-primary:hover::after{left:140%}
+.btn-primary:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(255,106,0,.5)}
+.btn-ghost{border:1px solid rgba(255,106,0,.5);color:var(--text)}
+.btn-ghost:hover{background:rgba(255,106,0,.12);border-color:var(--orange);transform:translateY(-4px)}
+.scroll-hint{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:10px}
+.scroll-hint::after{content:'';width:1px;height:46px;background:linear-gradient(var(--orange),transparent);animation:drip 2s ease-in-out infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+
+/* ---------- MARQUEE ---------- */
+.marquee{position:relative;z-index:2;border-block:1px solid var(--line);background:rgba(255,106,0,.04);overflow:hidden;padding:18px 0}
+.marquee-track{display:flex;gap:60px;width:max-content;animation:marquee 32s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee-track span{font-family:'Syne',sans-serif;font-weight:700;font-size:1.5rem;text-transform:uppercase;letter-spacing:.06em;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.35);display:flex;align-items:center;gap:60px;white-space:nowrap}
+.marquee-track span::after{content:'✦';color:var(--orange);-webkit-text-stroke:0;font-size:1rem}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* ---------- SECTIONS ---------- */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+section{padding:130px 6vw}
+.section-tag{font-family:'DM Mono',monospace;color:var(--orange);font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:14px}
+.section-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(2.4rem,6vw,5rem);line-height:1.02;letter-spacing:-.02em;margin-bottom:60px}
+
+/* ---------- ABOUT ---------- */
+.about-grid{display:grid;grid-template-columns:minmax(260px,420px) 1fr;gap:70px;align-items:center}
+.about-photo-wrap{position:relative;aspect-ratio:4/5;border-radius:24px}
+.about-photo-wrap::before{
+  content:'';position:absolute;inset:-3px;border-radius:26px;z-index:-1;
+  background:conic-gradient(from 0deg,var(--orange),transparent 30%,var(--amber),transparent 70%,var(--orange));
+  animation:spin 6s linear infinite;filter:blur(2px);
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.photo-inner{position:absolute;inset:0;border-radius:24px;overflow:hidden;background:#111;display:grid;place-items:center}
+.profile-img{width:100%;height:100%;object-fit:cover;filter:grayscale(.35) contrast(1.05);transition:all .6s;position:relative;z-index:1}
+.about-photo-wrap:hover .profile-img{filter:none;transform:scale(1.05)}
+.photo-fallback{position:absolute;font-family:'Syne',sans-serif;font-weight:800;font-size:9rem;color:var(--orange);opacity:.9}
+.photo-inner::after{content:'';position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.7));pointer-events:none}
+.photo-badge{
+  position:absolute;left:50%;bottom:-18px;transform:translateX(-50%);z-index:3;white-space:nowrap;
+  font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  background:#0c0c0c;border:1px solid rgba(255,106,0,.5);padding:10px 20px;border-radius:50px;
+  display:flex;align-items:center;gap:10px;
+}
+.photo-badge::before{content:'';width:8px;height:8px;border-radius:50%;background:#22e07a;box-shadow:0 0 0 0 rgba(34,224,122,.7);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 10px rgba(34,224,122,0)}100%{box-shadow:0 0 0 0 rgba(34,224,122,0)}}
+.about-text p{color:#cfc8c0;font-size:1.1rem;margin-bottom:22px}
+.about-text strong{color:var(--orange2);font-weight:500}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:34px 0}
+.stat{border:1px solid var(--line);border-radius:16px;padding:20px;background:rgba(255,255,255,.02);transition:all .3s}
+.stat:hover{border-color:rgba(255,106,0,.5);transform:translateY(-4px);background:rgba(255,106,0,.05)}
+.stat b{display:block;font-family:'Syne',sans-serif;font-size:2.2rem;color:var(--orange);line-height:1.1}
+.stat small{font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.stack-label{font-family:'DM Mono',monospace;color:var(--muted);font-size:.8rem;margin-bottom:14px}
+.skills-grid{display:flex;flex-wrap:wrap;gap:10px}
+.skill-tag{
+  font-family:'DM Mono',monospace;font-size:.78rem;padding:9px 16px;border-radius:50px;
+  border:1px solid var(--line);background:rgba(255,255,255,.03);display:inline-flex;align-items:center;gap:9px;
+  transition:all .3s;
+}
+.skill-tag i{color:var(--orange)}
+.skill-tag:hover{border-color:var(--orange);background:rgba(255,106,0,.12);transform:translateY(-4px) rotate(-1.5deg);box-shadow:0 8px 22px rgba(255,106,0,.2)}
+
+/* ---------- PROJECTS ---------- */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px}
+.project-card{
+  position:relative;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:34px 30px;
+  display:flex;flex-direction:column;overflow:hidden;
+  transition:transform .25s ease,border-color .3s,box-shadow .3s;transform-style:preserve-3d;will-change:transform;
+}
+.project-card::before{
+  content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;pointer-events:none;
+  background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(255,106,0,.18),transparent 45%);
+}
+.project-card::after{
+  content:'';position:absolute;left:0;top:0;height:3px;width:0;background:linear-gradient(90deg,var(--orange),var(--amber));transition:width .5s;
+}
+.project-card:hover{border-color:rgba(255,106,0,.55);box-shadow:0 24px 60px rgba(0,0,0,.6),0 0 40px rgba(255,106,0,.12)}
+.project-card:hover::before{opacity:1}
+.project-card:hover::after{width:100%}
+.project-num{font-family:'DM Mono',monospace;font-size:.78rem;color:var(--orange);letter-spacing:.2em;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.project-num::after{content:'';flex:1;height:1px;background:var(--line)}
+.project-card h3{font-family:'Syne',sans-serif;font-weight:700;font-size:1.5rem;line-height:1.2;margin-bottom:12px;transition:color .3s}
+.project-card:hover h3{color:var(--orange2)}
+.project-card p{color:var(--muted);font-size:.96rem;margin-bottom:22px;flex:1}
+.project-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.tag{font-family:'DM Mono',monospace;font-size:.7rem;padding:5px 12px;border-radius:6px;background:rgba(255,106,0,.1);color:var(--orange2);border:1px solid rgba(255,106,0,.2)}
+.project-link{font-family:'DM Mono',monospace;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text);display:inline-flex;align-items:center;gap:10px;align-self:flex-start;padding-bottom:4px;border-bottom:1px solid var(--orange);transition:all .3s}
+.project-link:hover{color:var(--orange);gap:16px}
+
+/* ---------- CONTACT ---------- */
+.contact-inner{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;padding:70px;border:1px solid var(--line);border-radius:32px;background:linear-gradient(135deg,rgba(255,106,0,.09),rgba(255,255,255,.01));position:relative;overflow:hidden}
+.contact-inner::before{content:'';position:absolute;width:460px;height:460px;right:-140px;top:-160px;background:radial-gradient(circle,rgba(255,106,0,.35),transparent 65%);animation:float3 14s ease-in-out infinite}
+.contact-inner>*{position:relative}
+.contact-heading{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(2.6rem,6vw,5rem);line-height:1;letter-spacing:-.02em;margin-bottom:22px}
+.contact-heading span{background:linear-gradient(100deg,var(--orange),var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent}
+.contact-sub{color:var(--muted);max-width:420px}
+.contact-links{display:flex;flex-direction:column;gap:14px}
+.contact-link{display:flex;align-items:center;gap:18px;padding:20px 24px;border-radius:18px;border:1px solid var(--line);background:rgba(7,7,7,.6);backdrop-filter:blur(6px);transition:all .35s}
+.contact-link:hover{border-color:var(--orange);transform:translateX(10px);box-shadow:-8px 0 30px rgba(255,106,0,.15);background:rgba(255,106,0,.07)}
+.cl-icon{width:46px;height:46px;display:grid;place-items:center;border-radius:14px;background:rgba(255,106,0,.12);color:var(--orange);font-size:1.15rem;transition:all .35s}
+.contact-link:hover .cl-icon{background:var(--orange);color:#000;transform:rotate(-8deg) scale(1.1)}
+.cl-info{flex:1;display:flex;flex-direction:column;line-height:1.35}
+.cl-label{font-family:'Syne',sans-serif;font-weight:600;font-size:1.05rem}
+.cl-sub{font-family:'DM Mono',monospace;font-size:.76rem;color:var(--muted)}
+.cl-arrow{color:var(--muted);transition:all .3s}
+.contact-link:hover .cl-arrow{color:var(--orange);transform:translateX(6px)}
+
+/* ---------- FOOTER ---------- */
+footer{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;padding:34px 6vw;border-top:1px solid var(--line);font-family:'DM Mono',monospace;font-size:.78rem;color:var(--muted)}
+.footer-logo{font-family:'Syne',sans-serif;font-weight:800;color:var(--text);letter-spacing:.08em}
+.footer-logo span{color:var(--orange)}
+.to-top{position:fixed;right:28px;bottom:28px;z-index:900;width:48px;height:48px;border-radius:50%;border:1px solid rgba(255,106,0,.5);background:rgba(7,7,7,.8);color:var(--orange);display:grid;place-items:center;opacity:0;pointer-events:none;transform:translateY(20px);transition:all .4s;backdrop-filter:blur(8px)}
+.to-top.show{opacity:1;pointer-events:auto;transform:none}
+.to-top:hover{background:var(--orange);color:#000;box-shadow:0 0 26px var(--glow)}
+
+/* ---------- RESPONSIVE ---------- */
+@media(max-width:900px){
+  .about-grid,.contact-inner{grid-template-columns:1fr;gap:50px}
+  .contact-inner{padding:40px 26px}
+  .about-photo-wrap{max-width:340px;margin:0 auto}
+  .burger{display:block}
+  nav ul{position:fixed;top:0;right:-100%;height:100vh;width:min(300px,80vw);flex-direction:column;justify-content:center;gap:30px;background:rgba(10,10,10,.97);border-left:1px solid var(--line);transition:right .4s}
+  nav ul.open{right:0}
+  nav ul a{font-size:1rem}
+  .burger{z-index:1200}
+  .stats{grid-template-columns:1fr 1fr 1fr}
+  section{padding:90px 6vw}
+}
+@media(max-width:520px){.stats{grid-template-columns:1fr}.hero-actions{width:100%}.btn-primary,.btn-ghost{flex:1;text-align:center;padding:16px 18px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
+</style>
 </head>
 <body>
 
-<canvas id="stars"></canvas>
+<div class="progress" id="progress"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="ring"></div>
 
-<nav>
-    <div class="logo">KAUÃ SOUSA<span>_</span></div>
-    <ul>
-        <li><a href="#about">Sobre</a></li>
-        <li><a href="#projects">Projetos</a></li>
-        <li><a href="#contact" class="nav-cta">Contato</a></li>
-    </ul>
+<div class="blobs"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div class="grid-bg"></div>
+<canvas id="bg"></canvas>
+<div class="noise"></div>
+
+<nav id="nav">
+  <div class="logo">KAUÃ SOUSA<span>_</span></div>
+  <button class="burger" id="burger" aria-label="Menu"><i class="fas fa-bars"></i></button>
+  <ul id="menu">
+    <li><a href="#about">Sobre</a></li>
+    <li><a href="#projects">Projetos</a></li>
+    <li><a href="#contact" class="nav-cta">Contato</a></li>
+  </ul>
 </nav>
 
 <header id="hero">
-    <div class="hero-label">Backend &amp; Full Stack Developer</div>
-    <h1 class="hero-title">
-        <span class="line-1">Arquite&shy;tando</span><br>
-        <span class="line-2">o <span class="accent-word">Futuro</span></span>
-    </h1>
-    <div class="hero-bottom">
-        <p class="hero-desc">
-            Especialista em APIs escaláveis, segurança e performance. A lógica por trás da interface — impecável, rápida e à prova de falhas.
-        </p>
-        <div class="hero-actions">
-            <a href="#projects" class="btn-primary">Ver Projetos</a>
-            <a href="#contact" class="btn-ghost">Entrar em contato</a>
-        </div>
+  <div class="hero-label">Backend &amp; Full Stack Developer</div>
+  <h1 class="hero-title">
+    <span class="line"><span class="line-1">Arquitetando</span></span>
+    <span class="line"><span class="line-2">o <span class="accent-word">Futuro</span></span></span>
+  </h1>
+  <div class="typed"><span id="typed"></span><span class="caret"></span></div>
+  <div class="hero-bottom">
+    <p class="hero-desc">Especialista em APIs escaláveis, segurança e performance. A lógica por trás da interface — impecável, rápida e à prova de falhas.</p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn-primary">Ver Projetos</a>
+      <a href="#contact" class="btn-ghost">Entrar em contato</a>
     </div>
-    <span class="scroll-hint">scroll</span>
+  </div>
+  <span class="scroll-hint">scroll</span>
 </header>
 
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track" id="marquee"></div>
+</div>
+
 <section id="about">
+  <div class="reveal">
     <div class="section-tag">01 — Perfil</div>
     <h2 class="section-title">Sistema_<br>Profile</h2>
-    <div class="about-grid">
-        <div class="about-photo-wrap">
-            <img src="upload/Eu.jpeg" alt="Kauã Sousa" class="profile-img">
-            <span class="photo-badge">Disponível para projetos</span>
-        </div>
-        <div class="about-text">
-            <p>
-                Desenvolvedor <strong>Backend e Frontend</strong> focado em arquiteturas distribuídas e segurança. Minha missão é garantir que a lógica por trás da interface seja impecável, rápida e à prova de falhas.
-            </p>
-            <p>
-                Apaixonado por resolver problemas complexos com código limpo e sistemas que escalam. Busco sempre o equilíbrio entre <strong>performance, segurança e experiência do desenvolvedor</strong>.
-            </p>
-            <div class="stack-label">// Stack tecnológico</div>
-            <div class="skills-grid">
-                <span class="skill-tag"><i class="fab fa-node-js"></i>Node.js</span>
-                <span class="skill-tag"><i class="fab fa-python"></i>Python</span>
-                <span class="skill-tag"><i class="fas fa-database"></i>PostgreSQL</span>
-                <span class="skill-tag"><i class="fab fa-docker"></i>Docker</span>
-                <span class="skill-tag"><i class="fab fa-java"></i>Java</span>
-                <span class="skill-tag"><i class="fas fa-server"></i>GoLang</span>
-                <span class="skill-tag"><i class="fab fa-js"></i>JavaScript</span>
-                <span class="skill-tag"><i class="fas fa-cloud"></i>AWS</span>
-                <span class="skill-tag"><i class="fas fa-code-branch"></i>Git</span>
-                <span class="skill-tag"><i class="fas fa-rocket"></i>DevOps</span>
-                <span class="skill-tag"><i class="fab fa-php"></i>PHP</span>
-            </div>
-        </div>
+  </div>
+  <div class="about-grid reveal">
+    <div class="about-photo-wrap">
+      <div class="photo-inner">
+        <span class="photo-fallback">K</span>
+        <img src="upload/Eu.jpeg" alt="Kauã Sousa" class="profile-img" onerror="this.style.display='none'">
+      </div>
+      <span class="photo-badge">Disponível para projetos</span>
     </div>
+    <div class="about-text">
+      <p>Desenvolvedor <strong>Backend e Frontend</strong> focado em arquiteturas distribuídas e segurança. Minha missão é garantir que a lógica por trás da interface seja impecável, rápida e à prova de falhas.</p>
+      <p>Apaixonado por resolver problemas complexos com código limpo e sistemas que escalam. Busco sempre o equilíbrio entre <strong>performance, segurança e experiência do desenvolvedor</strong>.</p>
+      <div class="stats">
+        <div class="stat"><b data-count="7">0</b><small>Projetos</small></div>
+        <div class="stat"><b data-count="11">0</b><small>Tecnologias</small></div>
+        <div class="stat"><b data-count="24" data-suffix="h">0</b><small>Resposta</small></div>
+      </div>
+      <div class="stack-label">// Stack tecnológico</div>
+      <div class="skills-grid">
+        <span class="skill-tag"><i class="fab fa-node-js"></i>Node.js</span>
+        <span class="skill-tag"><i class="fab fa-python"></i>Python</span>
+        <span class="skill-tag"><i class="fas fa-database"></i>PostgreSQL</span>
+        <span class="skill-tag"><i class="fab fa-docker"></i>Docker</span>
+        <span class="skill-tag"><i class="fab fa-java"></i>Java</span>
+        <span class="skill-tag"><i class="fas fa-server"></i>GoLang</span>
+        <span class="skill-tag"><i class="fab fa-js"></i>JavaScript</span>
+        <span class="skill-tag"><i class="fas fa-cloud"></i>AWS</span>
+        <span class="skill-tag"><i class="fas fa-code-branch"></i>Git</span>
+        <span class="skill-tag"><i class="fas fa-rocket"></i>DevOps</span>
+        <span class="skill-tag"><i class="fab fa-php"></i>PHP</span>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section id="projects">
+  <div class="reveal">
     <div class="section-tag">02 — Trabalhos</div>
     <h2 class="section-title">Sistemas<br>Desenvolvidos</h2>
-    <div class="projects-grid">
-        <div class="project-card">
-            <div class="project-num">001</div>
-            <h3>Trilha Caminhos da Ibiapaba</h3>
-            <p>Site institucional para uma companhia de trilhas da Serra da Ibiapaba, com foco em experiência do usuário e presença digital.</p>
-            <div class="project-tags">
-                <span class="tag">WordPress</span>
-                <span class="tag">PHP</span>
-            </div>
-            <a href="https://trilhacaminhosdaibiapaba.com.br" target="_blank" class="project-link">
-                <i class="fas fa-external-link-alt"></i> Ver online
-            </a>
-        </div>
-        <div class="project-card">
-            <div class="project-num">001</div>
-            <h3>Centro de Treinamento Ironberg</h3>
-            <p>Sistema de gestão de academia</p>
-            <div class="project-tags">
-                <span class="tag">MySql</span>
-                <span class="tag">PHP</span>
-            </div>
-            <a href="https://saulodev.com.br/ironberg_academia/" target="_blank" class="project-link">
-                <i class="fas fa-external-link-alt"></i> Ver online
-            </a>
-        </div>
-        <div class="project-card">
-            <div class="project-num">001</div>
-            <h3>BiblioTech</h3>
-            <p>Sistema de Gestão de Bibliotecas </p>
-            <div class="project-tags">
-                <span class="tag">MySql</span>
-                <span class="tag">PHP</span>
-            </div>
-            <a href="https://saulodev.com.br/BiblioTech/" target="_blank" class="project-link">
-                <i class="fas fa-external-link-alt"></i> Ver online
-            </a>
-        </div>
-        <div class="project-card">
-            <div class="project-num">001</div>
-            <h3>Lab Manager</h3>
-            <p>Sistema de gestão de emprestimo de equipamentos escolares</p>
-            <div class="project-tags">
-                <span class="tag">MySql</span>
-                <span class="tag">PHP</span>
-            </div>
-            <a href="https://saulodev.com.br/lab-manager-escolar/" target="_blank" class="project-link">
-                <i class="fas fa-external-link-alt"></i> Ver online
-            </a>
-        </div>
-
-        <div class="project-card">
-            <div class="project-num">002</div>
-            <h3>CRUD de Agendamentos</h3>
-            <p>Sistema completo de CRUD de agendamentos para empresa de serviços, com arquitetura robusta e integração de banco de dados relacional.</p>
-            <div class="project-tags">
-                <span class="tag">Java</span>
-                <span class="tag">Spring Boot</span>
-            </div>
-            <a href="https://github.com/Kaua-Sousa21/CRUD-JAVA" target="_blank" class="project-link">
-                <i class="fab fa-github"></i> Repositório
-            </a>
-        </div>
-        <div class="project-card">
-            <div class="project-num">002</div>
-            <h3>OrderFlow</h3>
-            <p>Sistema de Delivery completo e seguro, feito com Java e SpringBoot.</p>
-            <div class="project-tags">
-                <span class="tag">Java</span>
-                <span class="tag">Spring Boot</span>
-                <span class="tag">MySql</span>
-                <span class="tag">HTML</span>
-                <span class="tag">JavaScript</span>
-                <span class="tag">CSS</span>
-            </div>
-            <a href="https://github.com/Kaua-Sousa21/orderflow" target="_blank" class="project-link">
-                <i class="fab fa-github"></i> Repositório
-            </a>
-        </div>
-
-        <div class="project-card">
-            <div class="project-num">004</div>
-            <h3>Sistema Pequenas Vias</h3>
-            <p>Plataforma de gerenciamento e pesquisa de Santos e Santas Católicos com funcionalidades de busca avançada e catálogo interativo.</p>
-            <div class="project-tags">
-                <span class="tag">PHP</span>
-                <span class="tag">MySQL</span>
-            </div>
-            <a href="https://github.com/Kaua-Sousa21/Pequena-Vias" target="_blank" class="project-link">
-                <i class="fab fa-github"></i> Repositório
-            </a>
-        </div>
+  </div>
+  <div class="projects-grid">
+    <div class="project-card reveal">
+      <div class="project-num">001</div>
+      <h3>Trilha Caminhos da Ibiapaba</h3>
+      <p>Site institucional para uma companhia de trilhas da Serra da Ibiapaba, com foco em experiência do usuário e presença digital.</p>
+      <div class="project-tags"><span class="tag">WordPress</span><span class="tag">PHP</span></div>
+      <a href="https://trilhacaminhosdaibiapaba.com.br" target="_blank" rel="noopener" class="project-link"><i class="fas fa-external-link-alt"></i> Ver online</a>
     </div>
+    <div class="project-card reveal">
+      <div class="project-num">002</div>
+      <h3>Centro de Treinamento Ironberg</h3>
+      <p>Sistema de gestão de academia.</p>
+      <div class="project-tags"><span class="tag">MySql</span><span class="tag">PHP</span></div>
+      <a href="https://saulodev.com.br/ironberg_academia/" target="_blank" rel="noopener" class="project-link"><i class="fas fa-external-link-alt"></i> Ver online</a>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">003</div>
+      <h3>BiblioTech</h3>
+      <p>Sistema de Gestão de Bibliotecas.</p>
+      <div class="project-tags"><span class="tag">MySql</span><span class="tag">PHP</span></div>
+      <a href="https://saulodev.com.br/BiblioTech/" target="_blank" rel="noopener" class="project-link"><i class="fas fa-external-link-alt"></i> Ver online</a>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">004</div>
+      <h3>Lab Manager</h3>
+      <p>Sistema de gestão de empréstimo de equipamentos escolares.</p>
+      <div class="project-tags"><span class="tag">MySql</span><span class="tag">PHP</span></div>
+      <a href="https://saulodev.com.br/lab-manager-escolar/" target="_blank" rel="noopener" class="project-link"><i class="fas fa-external-link-alt"></i> Ver online</a>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">005</div>
+      <h3>CRUD de Agendamentos</h3>
+      <p>Sistema completo de CRUD de agendamentos para empresa de serviços, com arquitetura robusta e integração de banco de dados relacional.</p>
+      <div class="project-tags"><span class="tag">Java</span><span class="tag">Spring Boot</span></div>
+      <a href="https://github.com/Kaua-Sousa21/CRUD-JAVA" target="_blank" rel="noopener" class="project-link"><i class="fab fa-github"></i> Repositório</a>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">006</div>
+      <h3>OrderFlow</h3>
+      <p>Sistema de Delivery completo e seguro, feito com Java e Spring Boot.</p>
+      <div class="project-tags"><span class="tag">Java</span><span class="tag">Spring Boot</span><span class="tag">MySql</span><span class="tag">HTML</span><span class="tag">JavaScript</span><span class="tag">CSS</span></div>
+      <a href="https://github.com/Kaua-Sousa21/orderflow" target="_blank" rel="noopener" class="project-link"><i class="fab fa-github"></i> Repositório</a>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">007</div>
+      <h3>Sistema Pequenas Vias</h3>
+      <p>Plataforma de gerenciamento e pesquisa de Santos e Santas Católicos com funcionalidades de busca avançada e catálogo interativo.</p>
+      <div class="project-tags"><span class="tag">PHP</span><span class="tag">MySQL</span></div>
+      <a href="https://github.com/Kaua-Sousa21/Pequena-Vias" target="_blank" rel="noopener" class="project-link"><i class="fab fa-github"></i> Repositório</a>
+    </div>
+  </div>
 </section>
 
 <section id="contact">
-    <div class="contact-inner">
-        <div>
-            <div class="section-tag">03 — Contato</div>
-            <h2 class="contact-heading">Vamos<br><span>Conversar?</span></h2>
-            <p class="contact-sub">
-                Atualmente disponível para novos projetos e colaborações em engenharia de software. Respondo em até 24h.
-            </p>
-        </div>
-        <div class="contact-links">
-            <a href="mailto:skaua2755@gmail.com" class="contact-link">
-                <div class="cl-icon"><i class="fas fa-envelope"></i></div>
-                <div class="cl-info">
-                    <span class="cl-label">E-mail</span>
-                    <span class="cl-sub">skaua2755@gmail.com</span>
-                </div>
-                <i class="fas fa-arrow-right cl-arrow"></i>
-            </a>
-            <a href="https://www.linkedin.com/in/kauã-sousa-156a2738a/" target="_blank" class="contact-link">
-                <div class="cl-icon"><i class="fab fa-linkedin-in"></i></div>
-                <div class="cl-info">
-                    <span class="cl-label">LinkedIn</span>
-                    <span class="cl-sub">Conectar na rede</span>
-                </div>
-                <i class="fas fa-arrow-right cl-arrow"></i>
-            </a>
-            <a href="https://github.com/Kaua-Sousa21" target="_blank" class="contact-link">
-                <div class="cl-icon"><i class="fab fa-github"></i></div>
-                <div class="cl-info">
-                    <span class="cl-label">GitHub</span>
-                    <span class="cl-sub">Ver repositórios</span>
-                </div>
-                <i class="fas fa-arrow-right cl-arrow"></i>
-            </a>
-        </div>
+  <div class="contact-inner reveal">
+    <div>
+      <div class="section-tag">03 — Contato</div>
+      <h2 class="contact-heading">Vamos<br><span>Conversar?</span></h2>
+      <p class="contact-sub">Atualmente disponível para novos projetos e colaborações em engenharia de software. Respondo em até 24h.</p>
     </div>
+    <div class="contact-links">
+      <a href="mailto:skaua2755@gmail.com" class="contact-link">
+        <div class="cl-icon"><i class="fas fa-envelope"></i></div>
+        <div class="cl-info"><span class="cl-label">E-mail</span><span class="cl-sub">skaua2755@gmail.com</span></div>
+        <i class="fas fa-arrow-right cl-arrow"></i>
+      </a>
+      <a href="https://www.linkedin.com/in/kauã-sousa-156a2738a/" target="_blank" rel="noopener" class="contact-link">
+        <div class="cl-icon"><i class="fab fa-linkedin-in"></i></div>
+        <div class="cl-info"><span class="cl-label">LinkedIn</span><span class="cl-sub">Conectar na rede</span></div>
+        <i class="fas fa-arrow-right cl-arrow"></i>
+      </a>
+      <a href="https://github.com/Kaua-Sousa21" target="_blank" rel="noopener" class="contact-link">
+        <div class="cl-icon"><i class="fab fa-github"></i></div>
+        <div class="cl-info"><span class="cl-label">GitHub</span><span class="cl-sub">Ver repositórios</span></div>
+        <i class="fas fa-arrow-right cl-arrow"></i>
+      </a>
+    </div>
+  </div>
 </section>
 
 <footer>
-    <p>&copy; 2026 — Desenvolvido com código e café.</p>
-    <div class="footer-logo">KAUÃ<span>_</span>DEV</div>
+  <p>&copy; 2026 — Desenvolvido com código e café.</p>
+  <div class="footer-logo">KAUÃ<span>_</span>DEV</div>
 </footer>
 
+<a href="#hero" class="to-top" id="toTop" aria-label="Voltar ao topo"><i class="fas fa-arrow-up"></i></a>
+
 <script>
-(function() {
-    const canvas = document.getElementById('stars');
-    const ctx = canvas.getContext('2d');
-    let stars = [];
-
-    function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-
-    function init() {
-        stars = [];
-        for (let i = 0; i < 120; i++) {
-            stars.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                r: Math.random() * 1.2 + 0.2,
-                o: Math.random() * 0.5 + 0.1,
-                s: (Math.random() - 0.5) * 0.15,
-                dy: -Math.random() * 0.08 - 0.02
-            });
+(function(){
+  /* ---------- Canvas: partículas laranja conectadas ---------- */
+  const canvas=document.getElementById('bg'),ctx=canvas.getContext('2d');
+  let W,H,pts=[],mouse={x:-9999,y:-9999};
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function resize(){
+    const dpr=Math.min(window.devicePixelRatio||1,2);
+    W=innerWidth;H=innerHeight;
+    canvas.width=W*dpr;canvas.height=H*dpr;
+    canvas.style.width=W+'px';canvas.style.height=H+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    const n=Math.min(110,Math.floor(W*H/14000));
+    pts=Array.from({length:n},()=>({
+      x:Math.random()*W,y:Math.random()*H,
+      vx:(Math.random()-.5)*.45,vy:(Math.random()-.5)*.45,
+      r:Math.random()*1.8+.6,
+      c:Math.random()>.7?'255,183,3':'255,106,0'
+    }));
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<pts.length;i++){
+      const p=pts[i];
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;
+      if(p.y<0||p.y>H)p.vy*=-1;
+      const dx=p.x-mouse.x,dy=p.y-mouse.y,d=Math.hypot(dx,dy);
+      if(d<140){p.x+=dx/d*1.6;p.y+=dy/d*1.6}
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.283);
+      ctx.fillStyle=`rgba(${p.c},.85)`;ctx.shadowColor=`rgba(${p.c},1)`;ctx.shadowBlur=8;ctx.fill();
+      ctx.shadowBlur=0;
+      for(let j=i+1;j<pts.length;j++){
+        const q=pts[j],dd=Math.hypot(p.x-q.x,p.y-q.y);
+        if(dd<130){
+          ctx.strokeStyle=`rgba(255,106,0,${(1-dd/130)*.28})`;ctx.lineWidth=.7;
+          ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();
         }
+      }
+      if(d<170){
+        ctx.strokeStyle=`rgba(255,183,3,${(1-d/170)*.55})`;ctx.lineWidth=.9;
+        ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(mouse.x,mouse.y);ctx.stroke();
+      }
     }
+    if(!reduce)requestAnimationFrame(draw);
+  }
+  addEventListener('resize',resize);
+  addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY});
+  addEventListener('mouseout',()=>{mouse.x=mouse.y=-9999});
+  resize();draw();
 
-    function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        stars.forEach(s => {
-            ctx.beginPath();
-            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(200,255,0,${s.o})`;
-            ctx.fill();
-            s.x += s.s;
-            s.y += s.dy;
-            s.o += (Math.random() - 0.5) * 0.02;
-            s.o = Math.max(0.05, Math.min(0.6, s.o));
-            if (s.y < -5) { s.y = canvas.height + 5; s.x = Math.random() * canvas.width; }
-            if (s.x < -5) s.x = canvas.width + 5;
-            if (s.x > canvas.width + 5) s.x = -5;
-        });
-        requestAnimationFrame(draw);
-    }
+  /* ---------- Cursor customizado ---------- */
+  const cur=document.getElementById('cursor'),ring=document.getElementById('ring');
+  let rx=0,ry=0,cx=0,cy=0;
+  addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY;cur.style.left=cx+'px';cur.style.top=cy+'px'});
+  (function loop(){rx+=(cx-rx)*.15;ry+=(cy-ry)*.15;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop)})();
+  document.querySelectorAll('a,button,.skill-tag,.stat').forEach(el=>{
+    el.addEventListener('mouseenter',()=>ring.classList.add('hover'));
+    el.addEventListener('mouseleave',()=>ring.classList.remove('hover'));
+  });
 
-    window.addEventListener('resize', () => { resize(); init(); });
-    resize(); init(); draw();
+  /* ---------- Efeito de digitação ---------- */
+  const words=['APIs escaláveis.','Arquiteturas seguras.','Código limpo.','Sistemas que não falham.','Performance de verdade.'];
+  const typed=document.getElementById('typed');
+  let wi=0,ci=0,del=false;
+  (function type(){
+    const w=words[wi];
+    typed.textContent=w.slice(0,del?--ci:++ci);
+    let t=del?35:75;
+    if(!del&&ci===w.length){t=1600;del=true}
+    else if(del&&ci===0){del=false;wi=(wi+1)%words.length;t=350}
+    setTimeout(type,t);
+  })();
 
-    // Smooth reveal on scroll
-    const els = document.querySelectorAll('.project-card, .about-grid, .contact-inner');
-    const obs = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-            if (e.isIntersecting) {
-                e.target.style.opacity = '1';
-                e.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, { threshold: 0.1 });
+  /* ---------- Marquee ---------- */
+  const stack=['Node.js','Python','PostgreSQL','Docker','Java','GoLang','JavaScript','AWS','Git','DevOps','PHP','Spring Boot'];
+  const mq=document.getElementById('marquee');
+  mq.innerHTML=[...stack,...stack].map(s=>`<span>${s}</span>`).join('')+[...stack,...stack].map(s=>`<span>${s}</span>`).join('');
+  mq.style.animationDuration='40s';
 
-    els.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(24px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        obs.observe(el);
+  /* ---------- Nav, progresso, topo ---------- */
+  const nav=document.getElementById('nav'),bar=document.getElementById('progress'),top=document.getElementById('toTop');
+  function onScroll(){
+    const s=scrollY,h=document.documentElement.scrollHeight-innerHeight;
+    bar.style.width=(s/h*100)+'%';
+    nav.classList.toggle('scrolled',s>40);
+    top.classList.toggle('show',s>600);
+  }
+  addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+  /* menu mobile */
+  const burger=document.getElementById('burger'),menu=document.getElementById('menu');
+  burger.addEventListener('click',()=>{
+    menu.classList.toggle('open');
+    burger.innerHTML=menu.classList.contains('open')?'<i class="fas fa-times"></i>':'<i class="fas fa-bars"></i>';
+  });
+  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{menu.classList.remove('open');burger.innerHTML='<i class="fas fa-bars"></i>'}));
+
+  /* ---------- Reveal + contadores ---------- */
+  const io=new IntersectionObserver(es=>es.forEach(e=>{
+    if(!e.isIntersecting)return;
+    e.target.classList.add('in');
+    e.target.querySelectorAll('[data-count]').forEach(count);
+    io.unobserve(e.target);
+  }),{threshold:.12});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{
+    if(el.classList.contains('project-card'))el.style.transitionDelay=(i%3)*.1+'s';
+    io.observe(el);
+  });
+  function count(el){
+    const target=+el.dataset.count,suf=el.dataset.suffix||'',t0=performance.now(),dur=1400;
+    (function step(t){
+      const p=Math.min((t-t0)/dur,1),e=1-Math.pow(1-p,3);
+      el.textContent=Math.round(target*e)+suf;
+      if(p<1)requestAnimationFrame(step);
+    })(t0);
+  }
+
+  /* ---------- Cards: tilt 3D + spotlight ---------- */
+  document.querySelectorAll('.project-card').forEach(card=>{
+    card.addEventListener('mousemove',e=>{
+      const r=card.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+      card.style.setProperty('--mx',x+'px');card.style.setProperty('--my',y+'px');
+      const rx=((y/r.height)-.5)*-8,ry=((x/r.width)-.5)*8;
+      card.style.transform=`perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-6px)`;
     });
+    card.addEventListener('mouseleave',()=>{card.style.transform=''});
+  });
+
+  /* ---------- Foto com leve parallax ---------- */
+  const photo=document.querySelector('.about-photo-wrap');
+  if(photo)addEventListener('mousemove',e=>{
+    const x=(e.clientX/innerWidth-.5)*10,y=(e.clientY/innerHeight-.5)*10;
+    photo.style.transform=`translate(${x}px,${y}px)`;
+  });
 })();
 </script>
 </body>
